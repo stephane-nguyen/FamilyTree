@@ -1,7 +1,6 @@
 package storage
 
 import (
-	"time"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -18,43 +17,81 @@ type Person_DB struct {
     Firstname   string `json:"firstname"`
     Middlename  string `json:"middlename"`
     Lastname    string `json:"lastname"`
-	Birthdate 	time.Time `json:"birthdate"`
+	Birthdate 	string `json:"birthdate"`
     Gender      string `json:"gender"`
     City        string `json:"city"`
     Country     string `json:"country"`
 	Photo		*[]byte`json:"photo"`
 }
-// type Person_DB struct {
-// 	Id			int 	  `json:"id" db:"id"`
-//     Firstname   string    `json:"firstname" db:"firstname"`
-//     Middlename  string    `json:"middlename" db:"middlename"`
-//     Lastname    string    `json:"lastname" db:"lastname"`
-//     Birthdate   time.Time `json:"birthdate" db:"birthdate"`
-//     Gender      string    `json:"gender" db:"gender"`
-//     City        string    `json:"city" db:"city"`
-//     Country     string    `json:"country" db:"country"`
-//     Photo       *[]byte   `json:"photo" db:"photo"`
-// }
+
+type NewPersonInput struct {
+	Firstname   string 
+    Middlename  string 
+    Lastname    string 
+	Birthdate 	string 
+    Gender      string 
+    City        string 
+    Country     string 
+    Photo     string
+}
 
 func (s *PersonStorage) GetAllPersons() ([]Person_DB, error){
 	persons := []Person_DB{}
+
 	err := s.Conn.Select(&persons, "SELECT * FROM Person")
 	if err != nil {
+		
 		return persons, err
 	}
 	return persons, nil
 }
 
-// func (s *PersonStorage) CreateNewPerson(person NewPerson) (int, error) {
-// 	query := "insert into person (firstname, middlename, lastname, birthdate, gender, city, country, photo) values (?, ?, ?, ?, ?, ?, ?, ?)"
-// 	res, err := s.Conn.Exec(query, person.firstname, person.middlename, person.lastname, person.birthdate, person.gender, person.city, person.country, person.photo)
-// 	if err != nil {
-// 		return 0, err
-// 	}
-// 	id, err := res.LastInsertId()
-// 	if err != nil {
-// 		return 0, err
-// 	}
+func (s *PersonStorage) GetpersonsByCountry(country string) ([]Person_DB, error){
+	persons := []Person_DB{}
 
-// 	return int(id), nil
-// }
+	err := s.Conn.Select(&persons, "SELECT * FROM Person WHERE country = ?", country)
+	if err != nil {
+		return persons, err
+	}
+
+	return persons, nil
+}
+
+func (s *PersonStorage) GetPersonById(id int) (Person_DB, error){
+	person := Person_DB{}
+
+	err := s.Conn.Get(&person, "SELECT * FROM Person WHERE id = ?", id)
+	if err != nil {
+		return person, err
+	}
+
+	return person, nil
+}
+
+func (s *PersonStorage) CreateNewPerson(person NewPersonInput) (int, error) {
+	query := "insert into Person (firstname, middlename, lastname, birthdate, gender, city, country, photo) values (?, ?, ?, ?, ?, ?, ?, ?)"
+
+	res, err := s.Conn.Exec(query, person.Firstname, person.Middlename, person.Lastname, person.Birthdate, person.Gender, person.City, person.Country, person.Photo)
+	if err != nil {
+		return 0, err
+	}
+
+	id, err := res.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+
+	return int(id), nil
+}
+
+func (s *PersonStorage) UpdatePersonById(id int) error {
+	_, err := s.Conn.Exec("UPDATE Person SET firstname=?, middlename=?, lastname=?, birthdate=?, gender=?, city=?, country=?, photo=? WHERE id=?", id)
+	
+	return err
+}
+
+func (s *PersonStorage) DeletePersonById(id int) error {
+	_, err := s.Conn.Exec("DELETE FROM Person WHERE id=?", id)
+	
+	return err
+}

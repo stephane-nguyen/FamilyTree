@@ -21,15 +21,16 @@ func NewFiberServer(lc fx.Lifecycle, personHandlers *handler.PersonHandler) *fib
 
 	v1 := app.Group("/v1") 
     personsV1 := v1.Group("/persons") 
-    personsV1.Get("/", personHandlers.FetchPersons)
-    // persons.Get("/:country", GetpersonsByCountry(driver))
-    // persons.Post("/", Create(driver))
-    // persons.Update("/:id", Update(driver))
-    // persons.Delete("/:id", Delete(driver))
+    personsV1.Get("", personHandlers.GetAllPersons)
+    personsV1.Get("/:id", personHandlers.GetPerson)
+    personsV1.Get("/country/:country", personHandlers.GetpersonsByCountry)
+    personsV1.Post("", personHandlers.CreatePerson)
+    personsV1.Put("/:id", personHandlers.UpdatePerson)
+    personsV1.Delete("/:id", personHandlers.DeletePerson)
 	
 	lc.Append(fx.Hook{
 		OnStart: func(context.Context) error {
-			fmt.Println("Starting fiber server on port %d", env.SERVER_PORT)
+			fmt.Println("[SERVER PORT] Starting fiber server on port: " + env.SERVER_PORT)
 			go app.Listen(":" + env.SERVER_PORT)
 			return nil
 		},
