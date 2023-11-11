@@ -28,7 +28,7 @@ func createDatabaseConnection() *sqlx.DB {
 	env := config.LoadEnv()
 	conn, err := sqlx.Connect("mysql", env.DSN)
 	if err != nil {
-		panic(fmt.Sprintf("Unable to connect to the database: %v\n", err))
+		panic(fmt.Sprintf("[MySQL] Unable to connect to the database: %v\n", err))
 	}
 
 	err = conn.Ping()
@@ -36,7 +36,7 @@ func createDatabaseConnection() *sqlx.DB {
 		panic(err)
 	}
 
-	fmt.Println("Successfully connected to the database")
+	fmt.Println("[MySQL] Successfully connected to the database")
 
 	return conn
 }
