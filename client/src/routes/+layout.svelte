@@ -1,34 +1,13 @@
-<nav>
-	<a href="/">Home</a>
-	<a href="/about">About</a>
-	<a href="/table">Table</a>
-	<a class="nav-right-side" href="/login">Login</a>
+<nav class="flex items-center justify-between bg-gray-200 p-4">
+	<div class="flex items-center space-x-4">
+	  <a href="/" class="text-gray-800 hover:text-gray-600">Home</a>
+	  <a href="/about" class="text-gray-800 hover:text-gray-600">About</a>
+	  <a href="/table" class="text-gray-800 hover:text-gray-600">Table</a>
+	</div>
+	
+	<div>
+		<a href="/login" class="px-4 py-2 text-gray-800 hover:text-gray-600">Login</a>
+	</div>
 </nav>
-
-
-<style>
-
-	nav {
-		background-color: #333; 
-		padding: 10px; 
-		display: flex; /* Use flexbox to control positioning */
-		justify-content: space-between; /* Push elements to opposite ends */
-	}
-
-	nav a {
-		text-decoration: none; /* Remove underline from links */
-		color: #fff; 
-		margin: 0 10px; 
-	}
-
-	nav a:hover {
-		text-decoration: underline; 
-	}
-
-	.nav-right-side {
-		margin-left: auto;
-	}
-
-</style>
-
+  
 <slot />
