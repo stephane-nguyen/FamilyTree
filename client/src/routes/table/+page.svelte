@@ -1,0 +1,67 @@
+<script>
+
+  async function getPersons() {
+    const response = await fetch('http://localhost:8000/v1/persons');
+    const json = await response.json();
+    return json.persons;
+  }
+
+  function calculateAge(birthdate) {
+    const today = new Date();
+    const dateOfBirth = new Date(birthdate);
+    
+    let age = today.getFullYear() - dateOfBirth.getFullYear();
+    const monthDiff = today.getMonth() - dateOfBirth.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dateOfBirth.getDate())) {
+      age--;
+    }
+
+    return age;
+  }
+
+  const personAttributes = ["Firstname", "Middlename", "Lastname", "Age", "Gender", "City", "Country", "Photo"];
+
+</script>
+
+{#await getPersons()}
+  <p>Loading...</p>
+{:then persons}
+  <div class="flex flex-col">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+        <div class="overflow-hidden">
+          <table class="min-w-full text-left text-sm font-light">
+            <thead class="border-b font-medium dark:border-neutral-500">
+              <tr>
+                {#each personAttributes as heading}
+                  <th class="px-6 py-4">{heading}</th>
+                {/each}
+              </tr>
+            </thead>
+            <tbody>
+              {#each persons as person}
+                <tr class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
+                {#each personAttributes as attribute}
+                  <td class="whitespace-nowrap px-6 py-4">
+                  {#if attribute === "Age"}
+                    {calculateAge(person.birthdate)}
+                    {:else if attribute === "Photo"}
+                      <!-- svelte-ignore a11y-missing-attribute -->
+                      <img src={person[attribute.toLowerCase()]} />
+                    {:else}
+                      {person[attribute.toLowerCase()]}
+                  {/if}
+                  </td>
+                {/each}
+                </tr>
+              {/each}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+{:catch error}
+	<p style="color: red">{error.message}</p>
+{/await}
