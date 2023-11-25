@@ -15,6 +15,8 @@ This project also aims to discover new technologies I am not familiar with.
 ## Stack
 SvelteKit is used for the frontend.
 
+Tailwind is used for the style.
+
 Go is used for the backend.
 
 MySQL is used for the database.
