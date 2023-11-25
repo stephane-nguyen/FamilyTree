@@ -1,6 +1,6 @@
-CREATE USER 'user1'@'127.0.0.1' IDENTIFIED BY 'password';
-GRANT SELECT, INSERT, UPDATE, DELETE ON family.* TO 'user1'@'127.0.0.1';
-FLUSH PRIVILEGES;
+-- CREATE USER 'user1'@'127.0.0.1' IDENTIFIED BY 'password';
+-- GRANT SELECT, INSERT, UPDATE, DELETE ON family.* TO 'user1'@'127.0.0.1';
+-- FLUSH PRIVILEGES;
 
 -- IDENTIFIED WITH caching_sha2_password BY 'password';
 -- grant all privileges on *.* to user1@localhost identified by 'password' with grant option;
@@ -10,12 +10,11 @@ CREATE TABLE Person (
     middlename  VARCHAR(30),
     lastname    VARCHAR(30) NOT NULL,
     birthdate   DATE,
-    gender      ENUM('Male', 'Female'),
+    gender      ENUM('Male', 'Female', 'Other'),
     city        VARCHAR(30),
     country     VARCHAR(30),
     photo       LONGBLOB
 );
-
 
 CREATE TABLE Relationship (
     id          INT AUTO_INCREMENT PRIMARY KEY,
