@@ -2,7 +2,7 @@
 	<div class="flex items-center space-x-4">
 	  <a href="/" class="text-gray-800 hover:text-gray-600">Home</a>
 	  <a href="/about" class="text-gray-800 hover:text-gray-600">About</a>
-	  <a href="/table" class="text-gray-800 hover:text-gray-600">Table</a>
+	  <a href="/members" class="text-gray-800 hover:text-gray-600">Table</a>
 	</div>
 	
 	<div>

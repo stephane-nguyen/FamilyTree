@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 
   async function getPersons() {
     const response = await fetch('http://localhost:8000/v1/persons');
@@ -6,7 +6,7 @@
     return json.persons;
   }
 
-  function calculateAge(birthdate) {
+  function calculateAge(birthdate: string) {
     const today = new Date();
     const dateOfBirth = new Date(birthdate);
     
@@ -20,7 +20,7 @@
     return age;
   }
 
-  const personAttributes = ["Firstname", "Middlename", "Lastname", "Age", "Gender", "City", "Country", "Photo"];
+  const personAttributes = ["Firstname", "Middlename", "Lastname", "Age", "Gender", "City", "Country"];
 
 </script>
 
@@ -46,11 +46,8 @@
                   <td class="whitespace-nowrap px-6 py-4">
                   {#if attribute === "Age"}
                     {calculateAge(person.birthdate)}
-                    {:else if attribute === "Photo"}
-                      <!-- svelte-ignore a11y-missing-attribute -->
-                      <img src={person[attribute.toLowerCase()]} />
-                    {:else}
-                      {person[attribute.toLowerCase()]}
+                  {:else}
+                    {person[attribute.toLowerCase()]}
                   {/if}
                   </td>
                 {/each}
