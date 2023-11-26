@@ -1,0 +1,22 @@
+FROM node:lts-slim AS build
+
+WORKDIR /client
+
+COPY client/package.json .
+COPY client/package-lock.json .
+
+RUN npm install
+
+COPY client .
+RUN npm run build
+
+
+FROM node:lts-slim AS run
+
+COPY --from=build /client/package.json ./package.json
+COPY --from=build /client/build ./build
+
+RUN npm install
+
+# Production
+# RUN npm install --omit=dev
