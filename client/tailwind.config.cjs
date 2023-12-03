@@ -3,7 +3,12 @@ const config = {
   content: ["./src/**/*.{html,js,svelte,ts}"],
 
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'tree_login': "url('/tree_login.png')",
+      }
+    },
+    
   },
 
   plugins: [],
