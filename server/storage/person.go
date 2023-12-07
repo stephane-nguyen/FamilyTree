@@ -13,15 +13,17 @@ func NewPersonStorage(conn *sqlx.DB) *PersonStorage {
 }
 
 type Person_DB struct {
-	Id			int `json:"id"`
-    Firstname   string `json:"firstname"`
-    Middlename  string `json:"middlename"`
-    Lastname    string `json:"lastname"`
-	Birthdate 	string `json:"birthdate"`
-    Gender      string `json:"gender"`
-    City        string `json:"city"`
-    Country     string `json:"country"`
-	Photo		*[]byte`json:"photo"`
+	Id          int    `db:"id" json:"id"`
+    UserId      *int   `db:"user_id" json:"user_id"` 
+    Firstname   string `db:"firstname" json:"firstname"`
+    Middlename  string `db:"middlename" json:"middlename"`
+    Lastname    string `db:"lastname" json:"lastname"`
+    Birthdate   string `db:"birthdate" json:"birthdate"`
+    Gender      string `db:"gender" json:"gender"`
+    City        string `db:"city" json:"city"`
+    Country     string `db:"country" json:"country"`
+    Description *string `db:"description" json:"description"`
+    Photo       *[]byte`db:"photo" json:"photo"`
 }
 
 type NewPersonInput struct {
@@ -32,7 +34,8 @@ type NewPersonInput struct {
     Gender      string 
     City        string 
     Country     string 
-    Photo     string
+	Description string
+    Photo     	string
 }
 
 func (s *PersonStorage) GetAllPersons() ([]Person_DB, error){
@@ -69,9 +72,9 @@ func (s *PersonStorage) GetPersonById(id int) (Person_DB, error){
 }
 
 func (s *PersonStorage) CreateNewPerson(person NewPersonInput) (int, error) {
-	query := "insert into Person (firstname, middlename, lastname, birthdate, gender, city, country, photo) values (?, ?, ?, ?, ?, ?, ?, ?)"
+	query := "insert into Person (firstname, middlename, lastname, birthdate, gender, city, country, description, photo) values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
-	res, err := s.Conn.Exec(query, person.Firstname, person.Middlename, person.Lastname, person.Birthdate, person.Gender, person.City, person.Country, person.Photo)
+	res, err := s.Conn.Exec(query, person.Firstname, person.Middlename, person.Lastname, person.Birthdate, person.Gender, person.City, person.Country, person.Description, person.Photo)
 	if err != nil {
 		return 0, err
 	}
@@ -85,7 +88,7 @@ func (s *PersonStorage) CreateNewPerson(person NewPersonInput) (int, error) {
 }
 
 func (s *PersonStorage) UpdatePersonById(id int) error {
-	_, err := s.Conn.Exec("UPDATE Person SET firstname=?, middlename=?, lastname=?, birthdate=?, gender=?, city=?, country=?, photo=? WHERE id=?", id)
+	_, err := s.Conn.Exec("UPDATE Person SET firstname=?, middlename=?, lastname=?, birthdate=?, gender=?, city=?, country=?, description=?, photo=? WHERE id=?", id)
 	
 	return err
 }
