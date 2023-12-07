@@ -1,23 +1,13 @@
 <script lang="ts">
 
+  import { goto } from '$app/navigation';
+  import { onMount } from 'svelte';
+  import { calculateAge } from '$lib/utils';
+
   async function getPersons() {
     const response = await fetch('http://localhost:8000/v1/persons');
     const json = await response.json();
     return json.persons;
-  }
-
-  function calculateAge(birthdate: string) {
-    const today = new Date();
-    const dateOfBirth = new Date(birthdate);
-    
-    let age = today.getFullYear() - dateOfBirth.getFullYear();
-    const monthDiff = today.getMonth() - dateOfBirth.getMonth();
-
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dateOfBirth.getDate())) {
-      age--;
-    }
-
-    return age;
   }
 
   const personAttributes = ["Firstname", "Middlename", "Lastname", "Age", "Gender", "City", "Country"];
@@ -41,7 +31,8 @@
             </thead>
             <tbody>
               {#each persons as person}
-                <tr class="border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
+                <tr on:click={() => goto(`/members/${person.id}`)} 
+                  class="cursor-pointer border-b transition duration-300 ease-in-out hover:bg-neutral-100 dark:border-neutral-500 dark:hover:bg-neutral-600">
                 {#each personAttributes as attribute}
                   <td class="whitespace-nowrap px-6 py-4">
                   {#if attribute === "Age"}

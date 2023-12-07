@@ -23,7 +23,7 @@ type createPersonRequest struct {
 	Middlename  string    `json:"middlename"`
 	Lastname    string    `json:"lastname" validate:"required"`
 	Birthdate   string    `json:"birthdate"`
-	Gender      string    `json:"gender" validate:"oneof=Male Female"`
+	Gender      string    `json:"gender" validate:"oneof=Male Female Other"`
 	City        string    `json:"city"`
 	Country     string    `json:"country"`
 	Photo       []byte    `json:"photo"`
