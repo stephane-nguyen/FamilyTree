@@ -6,6 +6,8 @@
   import type { Member } from '$lib/types';
 
   let members: Member[];
+  let showTable: boolean = true;
+  let showTree: boolean = false;
   let error: { message: any; };
   const memberAttributes = ["Firstname", "Middlename", "Lastname", "Age", "Gender", "City", "Country"];
 
@@ -25,10 +27,45 @@
     return json.members;
   }
 
+  function handleTableVisibility() {
+    showTable = true;
+    showTree = false;
+  }
+
+  function handleTreeVisibility() {
+    showTable = false;
+    showTree = true;
+  }
 
 </script>
 
-{#if members}
+<div class="flex align-stretch h-15 w-15 border-solid border-black m-4">
+  <button 
+    on:click={handleTableVisibility} 
+    class="mr-4"
+    type="button">
+    
+    <img
+      src="/table-list-svgrepo-com.svg" 
+      alt="table"
+      class="h-10 w-10"
+      >
+  </button>
+
+  <button 
+    on:click={handleTreeVisibility} 
+    type="button">
+    <img
+      src="/family-tree-svgrepo-com.svg" 
+      alt="family tree"
+      class="h-8 w-10"
+     >
+  </button>
+ 
+</div>
+
+
+{#if showTable && members}
   <div class="flex flex-col">
     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
       <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -64,6 +101,10 @@
   </div>
 {:else if error}
   <p style="color: red">{error.message}</p>
-{:else}
+{:else if showTable && !members}
   <p>Loading...</p>  
+{/if}
+
+{#if showTree && members}
+  <p>Tree...</p>  
 {/if}
