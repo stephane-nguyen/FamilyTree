@@ -1,23 +1,22 @@
 <script lang="ts">
     import { page } from '$app/stores';
     import { onMount } from 'svelte';
-    import type { Person } from '$lib/interfaces/Person';
+    import type { Member } from '$lib/types';
     import { calculateAge } from '$lib/utils';
 
-
-    let person: Person;
+    let member: Member;
     let error: { message: any; };
     const memberId: string = $page.params.memberId;
     const titles: string[] = ["Age", "Birthdate", "Gender", "Country", "City", "Description"];
   
-    async function getPerson() {
+    async function getMember() {
         try {
-            const response = await fetch(`http://localhost:8000/v1/persons/${memberId}`);
+            const response = await fetch(`http://localhost:8000/v1/members/${memberId}`);
     
             if (response.ok) {
                 return await response.json();
             } else {
-                throw new Error('Failed to fetch person');
+                throw new Error('Failed to fetch member');
             }
         } catch (err) {
             throw err;
@@ -25,9 +24,9 @@
     }
 
     onMount(() => {
-        getPerson()
+        getMember()
             .then(data => {
-                person = data.person;
+                member = data.member;
             })
             .catch(err => {
                 error = err;
@@ -36,12 +35,12 @@
   
 </script>
 
-{#if person}
+{#if member}
     <div class="mt-5 ml-5">
         <div class="bg-white max-w-2xl shadow overflow-hidden sm:rounded-lg">
             <div class="px-4 py-5 sm:px-6">
                 <h3 class="text-lg leading-6 font-medium text-gray-900">
-                    {person.firstname} {person.middlename} {person.lastname}
+                    {member.firstname} {member.middlename} {member.lastname}
                 </h3>
                 <p class="mt-1 max-w-2xl text-sm text-gray-500">
                     Details and informations about user.
@@ -56,12 +55,12 @@
                             </dt>
                             {#if title.toLowerCase() === "age"}
                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                    {calculateAge(person.birthdate)}
+                                    {calculateAge(member.birthdate)}
                                 </dd>
                             {:else}
                                 <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                    {#if person[title.toLowerCase()]}
-                                        {person[title.toLowerCase()]}
+                                    {#if member[title.toLowerCase()]}
+                                        {member[title.toLowerCase()]}
                                     {/if}
                                 </dd>
                             {/if}
@@ -69,7 +68,6 @@
                     </div>
                 </dl>
             </div>
-            
         </div>
     </div>
 {:else if error}

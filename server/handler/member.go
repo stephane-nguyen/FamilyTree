@@ -5,19 +5,19 @@ import (
     "github.com/stephane-nguyen/FamilyTree/server/storage"
 )
 
-type PersonHandler struct{
-	Storage *storage.PersonStorage
+type MemberHandler struct{
+	Storage *storage.MemberStorage
 }
 
-type fetchPersonsResponse struct {
-	Persons []storage.Person_DB `json:"persons"`
+type fetchMembersResponse struct {
+	Members []storage.Member_DB `json:"members"`
 }
 
-type fetchOnePersonResponse struct {
-	Person storage.Person_DB `json:"person"`
+type fetchOneMemberResponse struct {
+	Member storage.Member_DB `json:"member"`
 }
 
-type createPersonRequest struct {
+type createMemberRequest struct {
 	Firstname   string    `json:"firstname" validate:"required"`
 	Middlename  string    `json:"middlename"`
 	Lastname    string    `json:"lastname" validate:"required"`
@@ -28,68 +28,68 @@ type createPersonRequest struct {
 	Photo       []byte    `json:"photo"`
 }
 
-type createPersonResponse struct {
+type createMemberResponse struct {
 	Id 			int		  `json:"id"`
 	Firstname   string    `json:"firstname"`
 	Lastname    string    `json:"lastname"`
 }
 
-func NewPersonHandler(storage *storage.PersonStorage) *PersonHandler {
-	return &PersonHandler{Storage: storage}
+func NewMemberHandler(storage *storage.MemberStorage) *MemberHandler {
+	return &MemberHandler{Storage: storage}
 }
 
-func (h *PersonHandler) GetAllPersons(c *fiber.Ctx) error {
-	persons, err := h.Storage.GetAllPersons()
+func (h *MemberHandler) GetAllMembers(c *fiber.Ctx) error {
+	members, err := h.Storage.GetAllMembers()
 	if err != nil {
 		return err
 	}
 
-	response := fetchPersonsResponse{
-		Persons: persons,
+	response := fetchMembersResponse{
+		Members: members,
 	}
 	return c.JSON(response)
 }
 
-func (h *PersonHandler) GetpersonsByCountry(c *fiber.Ctx) error {
+func (h *MemberHandler) GetMembersByCountry(c *fiber.Ctx) error {
 	country := GetCountry(c)
 	
-	persons, err := h.Storage.GetpersonsByCountry(country)
+	members, err := h.Storage.GetMembersByCountry(country)
 	if err != nil {
 		return err
 	}
 
-	response := fetchPersonsResponse{
-		Persons: persons,
+	response := fetchMembersResponse{
+		Members: members,
 	}
 	return c.JSON(response)
 }
 
-func (h *PersonHandler) GetPerson(c *fiber.Ctx) error {
+func (h *MemberHandler) GetMember(c *fiber.Ctx) error {
 	id, err := GetId(c)
 	if err != nil {
         c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
         return err
     }
 
-	person, err := h.Storage.GetPersonById(id)
+	Member, err := h.Storage.GetMemberById(id)
 	if err != nil {
 		return err
 	}
 
-	response := fetchOnePersonResponse{Person: person}
+	response := fetchOneMemberResponse{Member: Member}
 	return c.JSON(response)
 }
 
 
-func (h *PersonHandler) CreatePerson(c *fiber.Ctx) error {
+func (h *MemberHandler) CreateMember(c *fiber.Ctx) error {
 
-	requestBody, err := GetRequestBody[createPersonRequest](c)
+	requestBody, err := GetRequestBody[createMemberRequest](c)
     if err != nil {
         c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
         return err
     }
 	
-	id, err := h.Storage.CreateNewPerson(storage.NewPersonInput{
+	id, err := h.Storage.CreateNewMember(storage.NewMemberInput{
 		Firstname: requestBody.Firstname,
 		Middlename: requestBody.Middlename,
 		Lastname: requestBody.Lastname,
@@ -102,19 +102,19 @@ func (h *PersonHandler) CreatePerson(c *fiber.Ctx) error {
 		return err
 	}
 
-	resp := createPersonResponse{Id: id, Firstname: requestBody.Firstname, Lastname: requestBody.Lastname}
+	resp := createMemberResponse{Id: id, Firstname: requestBody.Firstname, Lastname: requestBody.Lastname}
 
 	return c.JSON(resp)
 }
 
-func (h *PersonHandler) UpdatePerson(c *fiber.Ctx) error {
+func (h *MemberHandler) UpdateMember(c *fiber.Ctx) error {
 	id, err := GetId(c)
 	if err != nil {
         c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
         return err
     }
 
-	err = h.Storage.UpdatePersonById(id)
+	err = h.Storage.UpdateMemberById(id)
 	if err != nil {
 		return err
 	}
@@ -126,13 +126,13 @@ func (h *PersonHandler) UpdatePerson(c *fiber.Ctx) error {
 	return c.JSON(resp)
 }
 
-func (h *PersonHandler) DeletePerson(c *fiber.Ctx) error {
+func (h *MemberHandler) DeleteMember(c *fiber.Ctx) error {
 	id, err := GetId(c)
 	if err != nil {
 		return err
 	}
 
-	err = h.Storage.DeletePersonById(id)
+	err = h.Storage.DeleteMemberById(id)
 	if err != nil {
 		return err
 	}

@@ -11,7 +11,7 @@ CREATE TABLE User (
     password    VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE Person (
+CREATE TABLE Member (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     user_id     INT,
     firstname   VARCHAR(30) NOT NULL,
@@ -29,8 +29,8 @@ CREATE TABLE Person (
 CREATE TABLE Relationship (
     id                INT AUTO_INCREMENT PRIMARY KEY,
     relationship_type ENUM('Parent', 'Child', 'Sibling', 'Spouse', 'Cousin', 'Uncle', 'Aunt') NOT NULL,
-    person_id         INT, -- The person who has the relationship
-    related_person_id INT, -- The person related to the person in question
-    FOREIGN KEY (person_id) REFERENCES Person(id),
-    FOREIGN KEY (related_person_id) REFERENCES Person(id)
+    member_id         INT, -- The member who has the relationship
+    related_member_id INT, -- The member related to the member in question
+    FOREIGN KEY (member_id) REFERENCES Member(id),
+    FOREIGN KEY (related_member_id) REFERENCES Member(id)
 );

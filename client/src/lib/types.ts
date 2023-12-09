@@ -1,12 +1,13 @@
-export interface Person {
+export type Member = {
     id: number;
     firstname: string;
     middlename?: string;
     lastname: string;
-    birthdate: Date;
+    birthdate: string;
     gender: string;
     country: string;
     city: string;
+    description?: string;
     photo?: string;
-    description: string;
+    [key: string]: any; // Adding index signature to allow any other properties
 }

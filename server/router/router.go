@@ -12,7 +12,7 @@ import (
 	"github.com/stephane-nguyen/FamilyTree/server/handler"
 )
 
-func NewFiberServer(lc fx.Lifecycle, personHandlers *handler.PersonHandler) *fiber.App {
+func NewFiberServer(lc fx.Lifecycle, memberHandlers *handler.MemberHandler) *fiber.App {
 	app := fiber.New()
 	app.Use(cors.New())
 	app.Use(logger.New())
@@ -20,13 +20,13 @@ func NewFiberServer(lc fx.Lifecycle, personHandlers *handler.PersonHandler) *fib
 	env := config.LoadEnv()
 
 	v1 := app.Group("/v1") 
-    personsV1 := v1.Group("/persons") 
-    personsV1.Get("", personHandlers.GetAllPersons)
-    personsV1.Get("/:id", personHandlers.GetPerson)
-    personsV1.Get("/country/:country", personHandlers.GetpersonsByCountry)
-    personsV1.Post("", personHandlers.CreatePerson)
-    personsV1.Put("/:id", personHandlers.UpdatePerson)
-    personsV1.Delete("/:id", personHandlers.DeletePerson)
+    membersV1 := v1.Group("/members") 
+    membersV1.Get("", memberHandlers.GetAllMembers)
+    membersV1.Get("/:id", memberHandlers.GetMember)
+    membersV1.Get("/country/:country", memberHandlers.GetMembersByCountry)
+    membersV1.Post("", memberHandlers.CreateMember)
+    membersV1.Put("/:id", memberHandlers.UpdateMember)
+    membersV1.Delete("/:id", memberHandlers.DeleteMember)
 	
 	lc.Append(fx.Hook{
 		OnStart: func(context.Context) error {
