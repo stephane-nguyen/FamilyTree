@@ -15,8 +15,12 @@ func main() {
 		fx.Provide(
 			config.LoadEnv,
 			database.CreateMySqlConnection,
+			// Person
 			handler.NewPersonHandler,
 			storage.NewPersonStorage,
+			// User
+			handler.NewUserHandler,
+			storage.NewUserStorage,
 		),
 		fx.Invoke(router.NewFiberServer),
 	).Run()
