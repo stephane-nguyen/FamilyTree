@@ -1,4 +1,12 @@
 <script lang="ts">
+    import { goto } from "$app/navigation";
+
+    function oAuthGoogle() {
+        // const redirectUri: string = 'http://localhost:8000/v1/auth/google';
+        const redirectUri: string = 'http://127.0.0.1:8000/v1/auth/google';
+        goto(redirectUri);
+    }
+
 </script>
 
 <div class="bg-tree_login bg-cover bg-no-repeat flex justify-center items-center h-screen">
@@ -14,7 +22,6 @@
                     type="text"
                     name="user"
                     placeholder="Username"
-                    required 
                 />
             </div>
 
@@ -25,7 +32,6 @@
                     type="password"
                     name="password"
                     placeholder="Password"
-                    required
                 />
             </div>
 
@@ -51,11 +57,19 @@
 
             <div class="mt-3 flex flex-col gap-2">               
                 <button
+                    on:click={oAuthGoogle}
                     class="inline-flex h-10 w-full items-center justify-center gap-2 rounded border border-slate-300 bg-white p-2 text-sm font-medium text-black outline-none focus:ring-2 focus:ring-[#333] focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-60">
                     <img
                         src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google"
                         class="h-[18px] w-[18px] ">
                     Continue with Google
+                </button>
+                <button
+                    class="inline-flex h-10 w-full items-center justify-center gap-2 rounded border border-slate-300 bg-white p-2 text-sm font-medium text-black outline-none focus:ring-2 focus:ring-[#333] focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-60">
+                    <img
+                        src="/instagram-1-svgrepo-com.svg" alt="Instagram"
+                        class="h-[18px] w-[18px] ">
+                    Continue with Instagram
                 </button>
             </div>
 

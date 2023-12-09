@@ -10,11 +10,11 @@ type UserHandler struct{
 }
 
 type fetchUsersResponse struct {
-	Users []storage.User_DB `json:"Users"`
+	Users []storage.User_DB `json:"users"`
 }
 
 type fetchOneUserResponse struct {
-	User storage.User_DB `json:"User"`
+	User storage.User_DB `json:"user"`
 }
 
 type createUserRequest struct {
