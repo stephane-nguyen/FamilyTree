@@ -15,6 +15,8 @@ func main() {
 		fx.Provide(
 			config.LoadEnv,
 			database.CreateMySqlConnection,
+			// Auth
+			handler.NewAuthHandler,
 			// Member
 			handler.NewMemberHandler,
 			storage.NewMemberStorage,
