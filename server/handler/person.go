@@ -1,7 +1,6 @@
 package handler
 
 import (
-    "strconv"
     "github.com/gofiber/fiber/v2"
     "github.com/stephane-nguyen/FamilyTree/server/storage"
 )
@@ -33,10 +32,6 @@ type createPersonResponse struct {
 	Id 			int		  `json:"id"`
 	Firstname   string    `json:"firstname"`
 	Lastname    string    `json:"lastname"`
-}
-
-type basicResponse struct {
-	Success bool `json:"success"`
 }
 
 func NewPersonHandler(storage *storage.PersonStorage) *PersonHandler {
@@ -88,7 +83,7 @@ func (h *PersonHandler) GetPerson(c *fiber.Ctx) error {
 
 func (h *PersonHandler) CreatePerson(c *fiber.Ctx) error {
 
-	requestBody, err := GetRequestBody(c)
+	requestBody, err := GetRequestBody[createPersonRequest](c)
     if err != nil {
         c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
         return err
@@ -149,28 +144,6 @@ func (h *PersonHandler) DeletePerson(c *fiber.Ctx) error {
 	return c.JSON(resp)
 }
 
-func GetId(c *fiber.Ctx) (int, error) {
-	id := c.Params("id")
-
-	intID, err := strconv.Atoi(id)
-	if err != nil {
-		return 0, err
-	}
-
-	return intID, nil
-}
-
 func GetCountry(c *fiber.Ctx) string {
     return c.Params("country")
-}
-
-func GetRequestBody(c *fiber.Ctx) (createPersonRequest, error) {
-    var reqBody createPersonRequest
-
-    err := c.BodyParser(&reqBody); 
-	if err != nil {
-        return createPersonRequest{}, err
-    }
-
-    return reqBody, nil
 }
