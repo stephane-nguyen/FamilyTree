@@ -5,10 +5,9 @@ const config = {
   theme: {
     extend: {
       backgroundImage: {
-        'tree_login': "url('/tree_login.png')",
-      }
+        tree_login: "url('/tree_login.png')",
+      },
     },
-    
   },
 
   plugins: [],
