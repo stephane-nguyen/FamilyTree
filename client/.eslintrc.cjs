@@ -17,5 +17,7 @@ module.exports = {
     es2017: true,
     node: true,
   },
-  rules: {},
+  rules: {
+    "max-len": ["error", { code: 100 }],
+  },
 };
