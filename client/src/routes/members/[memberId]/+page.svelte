@@ -42,6 +42,10 @@
           {member.firstname}
           {member.middlename}
           {member.lastname}
+          <div class="float-right">
+            <img src="/pen-square-svgrepo-com.svg" alt="edit" class="w-8 h-8 mr-3 inline" />
+            <img src="/delete-profile-svgrepo-com.svg" alt="delete" class="w-8 h-8 inline" />
+          </div>
         </h3>
         <p class="mt-1 max-w-2xl text-sm text-gray-500">Details and informations about user.</p>
       </div>
